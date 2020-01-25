@@ -1,0 +1,36 @@
+{
+  "name": "lessware",
+  "version": "0.1.0",
+  "description": "framework for serverless middleware",
+  "module": "src/index.js",
+  "scripts": {
+    "eslint-src": "eslint src",
+    "eslint-test": "eslint --env mocha --plugin mocha --ext plugin:mocha/recommended test/index.spec.js",
+    "unit": "nyc mocha",
+    "test": "npm run eslint-src && npm run eslint-test && npm run unit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lessware/lessware.git"
+  },
+  "keywords": [
+    "serverless",
+    "middleware",
+    "nodejs",
+    "javascript",
+    "async"
+  ],
+  "author": "john k. grant <cyrfer@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lessware/lessware/issues"
+  },
+  "homepage": "https://github.com/lessware/lessware#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-mocha": "^6.2.2",
+    "mocha": "^7.0.0",
+    "nyc": "^15.0.0",
+    "webpack": "^4.41.5"
+  }
+}
