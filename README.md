@@ -32,9 +32,12 @@ module.exports = framework([
 const hello = require('./hello')
 const router = {hello}
 
+// persist connections setup by middleware
+const db = {}
+
 exports.handler = async (event, ctx) => {
   // initialize and pass the context parameter for the chain
-  return route[event.fieldName]({event, ctx})
+  return route[event.fieldName]({event, ctx, db})
 }
 ```
 
@@ -62,9 +65,12 @@ const router = Object.keys(routes).reduce((accum, path) => ({
   [path]: framework([configMiddleware, routes[path]]),
 }))
 
+// persist connections setup by middleware
+const db = {}
+
 exports.handler = async (event, ctx) => {
   // initialize and pass the context parameter for the chain
-  return route[event.fieldName]({event, ctx})
+  return route[event.fieldName]({event, ctx, db})
 }
 ```
 
