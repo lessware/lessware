@@ -1,6 +1,11 @@
 # Lessware
 A framework and extensions for serverless middleware.
 
+## Background
+Middleware can be asynchronous. Javascript natively defines a chaining mechanism for async operations. Promise chains are a natural way to implement middleware.
+
+This framework does nothing more than chain, in series, an array of functions that each return a promise. Each function is expected to pass the sole argument onto the next function in the chain, with the exception of the final function, which should return the desired output shape.
+
 ## Install
 `npm i -S lessware`
 
@@ -10,7 +15,9 @@ A framework and extensions for serverless middleware.
 const { framework } = require('lessware')
 
 module.exports = framework([
+  // simply adds a new field to the payload
   async context => ({...context, message: 'hello world'}),
+  // use field added in chain's previous method
   async context => ({
     statusCode: 200,
     body: JSON.stringify({message: context.message}),
@@ -18,8 +25,56 @@ module.exports = framework([
 ])
 ```
 
+## Example Usage - Entry Point Integration
+
+```javascript
+// module from previous example
+const hello = require('./hello')
+const router = {hello}
+
+exports.handler = async (event, ctx) => {
+  // initialize and pass the context parameter for the chain
+  return route[event.fieldName]({event, ctx})
+}
+```
+
+## Example Usage - Decorate all routes
+
+```javascript
+const hello = require('./hello')
+const { framework } = require('lessware')
+
+// define a common configuration middleware
+const configMiddleware = async context => ({...context, config: {
+  aws: {
+    region: process.env.AWS_DEFAULT_REGION,
+  },
+  mongo: {
+    secretConnection: process.env.NAME_SECRET_MONGO_CONNECTION,
+  },
+}})
+
+// define router
+const routes = {hello}
+const router = Object.keys(routes).reduce((accum, path) => ({
+  ...accum,
+  // decorate routes with common middleware
+  [path]: framework([configMiddleware, routes[path]]),
+}))
+
+exports.handler = async (event, ctx) => {
+  // initialize and pass the context parameter for the chain
+  return route[event.fieldName]({event, ctx})
+}
+```
+
 # Maintainers
 
 When buidling releases,
-- run tests: `npm test`
-- follow [guides for libraries](https://github.com/dherman/defense-of-dot-js/blob/master/proposal.md#typical-usage)
+1. follow [guides for libraries](https://github.com/dherman/defense-of-dot-js/blob/master/proposal.md#typical-usage)
+2. `npm test`
+3. `git commit -m "your message"`
+4. bump version 
+   1. `npm version patch`
+   2. `npm version minor`
+5. `npm publish`
