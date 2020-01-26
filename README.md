@@ -71,10 +71,9 @@ exports.handler = async (event, ctx) => {
 # Maintainers
 
 When buidling releases,
-1. follow [guides for libraries](https://github.com/dherman/defense-of-dot-js/blob/master/proposal.md#typical-usage)
-2. `npm test`
-3. `git commit -m "your message"`
-4. bump version 
+1. `npm test`
+2. `git commit -m "your message"`
+3. bump version 
    1. `npm version patch`
    2. `npm version minor`
-5. `npm publish`
+4. `npm publish`
