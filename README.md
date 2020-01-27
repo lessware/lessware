@@ -12,9 +12,10 @@ This framework does nothing more than chain, in series, an array of functions th
 ## Example Usage - API Route Controller
 
 ```javascript
+// -- hello.js --
 const { framework } = require('lessware')
 
-module.exports = framework([
+const chain = [
   // simply adds a new field to the payload
   async context => ({...context, message: 'hello world'}),
   // use field added in chain's previous method
@@ -22,13 +23,16 @@ module.exports = framework([
     statusCode: 200,
     body: JSON.stringify({message: context.message}),
   })
-])
+]
+
+module.exports = framework(chain)
 ```
 
 ## Example Usage - Entry Point Integration
 
 ```javascript
-// module from previous example
+// -- index.js --
+// dependency module from previous example
 const hello = require('./hello')
 const router = {hello}
 
@@ -37,13 +41,14 @@ const db = {}
 
 exports.handler = async (event, ctx) => {
   // initialize and pass the context parameter for the chain
-  return route[event.fieldName]({event, ctx, db})
+  return router[event.fieldName]({event, ctx, db})
 }
 ```
 
 ## Example Usage - Decorate all routes
 
 ```javascript
+// -- index.js --
 const hello = require('./hello')
 const { framework } = require('lessware')
 
