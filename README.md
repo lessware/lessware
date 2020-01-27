@@ -69,14 +69,14 @@ const router = Object.keys(routes).reduce((accum, path) => ({
   ...accum,
   // decorate routes with common middleware
   [path]: framework([configMiddleware, routes[path]]),
-}))
+}), {})
 
 // persist connections setup by middleware
 const db = {}
 
 exports.handler = async (event, ctx) => {
   // initialize and pass the context parameter for the chain
-  return route[event.fieldName]({event, ctx, db})
+  return router[event.fieldName]({event, ctx, db})
 }
 ```
 
