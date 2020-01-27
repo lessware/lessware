@@ -18,6 +18,7 @@ const { framework } = require('lessware')
 const chain = [
   // simply adds a new field to the payload
   async context => ({...context, message: 'hello world'}),
+
   // use field added in chain's previous method
   async context => ({
     statusCode: 200,
