@@ -59,14 +59,17 @@ const hello = require('./hello')
 const { framework } = require('lessware')
 
 // define a common configuration middleware
-const configMiddleware = async context => ({...context, config: {
-  aws: {
-    region: process.env.AWS_DEFAULT_REGION,
-  },
-  mongo: {
-    secretConnection: process.env.NAME_SECRET_MONGO_CONNECTION,
-  },
-}})
+const configMiddleware = async context => ({
+  ...context,
+  config: {
+    aws: {
+      region: process.env.AWS_DEFAULT_REGION,
+    },
+    mongo: {
+      secretConnection: process.env.NAME_SECRET_MONGO_CONNECTION,
+    },
+  }
+})
 
 // define router
 const routes = {hello}
@@ -80,8 +83,10 @@ const router = Object.keys(routes).reduce((accum, path) => ({
 const db = {}
 
 exports.handler = async (event, ctx) => {
+  const controller = router[event.fieldName]
+
   // initialize and pass the context parameter for the chain
-  return router[event.fieldName]({event, ctx, db})
+  return controller({event, ctx, db})
 }
 ```
 
@@ -93,4 +98,5 @@ When buidling releases,
 3. bump version 
    1. `npm version patch`
    2. `npm version minor`
-4. `npm publish`
+4. `git push`
+5. `npm publish`
