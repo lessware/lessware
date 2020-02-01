@@ -42,9 +42,6 @@ module.exports = framework(chain)
 const hello = require('./hello')
 const router = {hello}
 
-// persist connections setup by middleware
-const db = {}
-
 exports.handler = async (event, ctx) => {
   const controller = router[event.fieldName]
 
@@ -80,9 +77,6 @@ const router = Object.keys(routes).reduce((accum, path) => ({
   // decorate routes with common middleware
   [path]: framework([configMiddleware, routes[path]]),
 }), {})
-
-// persist connections setup by middleware
-const db = {}
 
 exports.handler = async (event, ctx) => {
   const controller = router[event.fieldName]
