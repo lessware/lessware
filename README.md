@@ -46,8 +46,10 @@ const router = {hello}
 const db = {}
 
 exports.handler = async (event, ctx) => {
+  const controller = router[event.fieldName]
+
   // initialize and pass the context parameter for the chain
-  return router[event.fieldName]({event, ctx, db})
+  return controller({event, ctx, db})
 }
 ```
 
