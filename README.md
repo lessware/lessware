@@ -10,7 +10,7 @@ This framework does nothing more than chain, in series, an array of functions th
 `npm i -S lessware`
 
 ## API
-`framework`
+`framework` - a function,
 - input: an array of middleware functions, each whose input takes the `context` object to read or write to, and output is a Promise.
 - output: a function whose input is the `context` object to be decorated, and output is a Promise.
 
