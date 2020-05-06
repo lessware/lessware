@@ -7,7 +7,7 @@ Middleware can be asynchronous. Javascript natively defines a chaining mechanism
 This framework does nothing more than chain, in series, an array of functions that each return a promise. Each function is expected to pass the sole argument onto the next function in the chain, with the exception of the final function, which should return the desired output shape.
 
 ## Install
-`npm i -S lessware`
+`npm i -S lessware/lessware`
 
 ## API
 `framework` - a function to make a function,
